@@ -1,0 +1,268 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+% -----------------------------------------------------
+% bvraghav-tiet-ucs503p-article.sty
+% -----------------------------------------------------
+
+% Variable: Lab Instructor
+\makeatletter \newcommand{\BvrSetLabInstructor}[1]{%
+  \gdef\Bvr@LabInstructor{#1}}
+% default
+\newcommand{\Bvr@LabInstructor}{Dr. Raghav %
+  B. Venkataramaiyer}
+% public accessor
+\newcommand{\BvrLabInstructorValue}{\Bvr@LabInstructor}
+\makeatother
+
+% Add subtitle
+\usepackage{titling}
+% -- Set title bold
+\pretitle{\begin{center}\bfseries\fontsize{18bp}{18bp}\selectfont}
+\makeatletter
+\newcommand{\BvrSubtitle}[1]{%
+  \posttitle{%
+    \par\end{center}
+    \begin{center}\large#1\end{center}
+    \vskip 0.5em}%
+}
+\makeatother
+
+% Hints in the section title(s)
+\newcommand{\BvrHint}[1]{%
+  {\normalfont\normalsize\itshape\hfill #1}}
+
+% -----------------------------------------------------
+
+\title{Developer Productivity Platform}
+
+\BvrSetLabInstructor{Dr. Raghav B. Venkataramaiyer}
+
+\BvrSubtitle{%
+  Project Proposal for UCS503P \\ \bfseries
+  Thapar Institute of Engineering and Technology% 
+}
+
+\author{
+  \begin{tabular}[t]{c}
+    Kunjal Syal \\ \small Roll No: 1024030337
+  \end{tabular}
+  \and
+  \begin{tabular}[t]{c}
+    Ayush Vaibhav \\ \small Roll No: 1024030333
+  \end{tabular}
+  \and
+  \begin{tabular}[t]{c}
+    Barleen Kaur \\ \small Roll No: 1024030321
+  \end{tabular}
+}
+
+\date{August 17, 2026}
+
+\begin{document}
+\maketitle
+
+\section{Higher-order goal%
+  \BvrHint{\ldots secondary framing}}
+This project aims to improve developer productivity and
+software comprehension by reducing the time and effort
+required to understand unfamiliar codebases. While the
+underlying goal applies broadly to any engineering
+organization, the immediate engineering objective is to
+translate \emph{faster, better-grounded code
+  understanding} into a measurable, deployable software
+solution.
+
+\section{Time-to-value %
+\BvrHint{\ldots primary heuristic}}
+\begin{itemize}[leftmargin=0.7cm]
+    \item We will deliver meaningful increments quickly by prototyping the core indexing-and-search workflow on a single sample repository before generalizing to arbitrary codebases.
+    \item We will prioritize fast feedback over completeness by using weekly iterations (and targeting CI-backed automation early) to reduce release friction.
+    \item Success in the first iteration is defined by whether a developer can ask a natural-language question about a real repository and get an answer grounded in an actual file/line, not by feature completeness.
+\end{itemize}
+
+\section{Problem Statement}
+Developers spend significant time locating and
+understanding relevant code when working in unfamiliar
+or large codebases. Existing tools fall short in
+specific ways:
+\begin{itemize}[leftmargin=0.7cm]
+    \item \textbf{Text-only search:} tools like grep or IDE symbol search match literal strings or symbol names, not intent -- a query like ``where is rate limiting enforced'' returns nothing unless that exact phrase appears in code.
+    \item \textbf{Fragmented context:} the reasoning behind code decisions often lives in pull request discussions or issue threads, and design documentation lives separately in tools like Notion -- neither is searchable alongside the code itself.
+    \item \textbf{No structural understanding:} flat text search has no notion of module boundaries, dependencies, or call relationships, so answers lack the surrounding architectural context a developer actually needs.
+    \item \textbf{Poor traceability:} answers to ``why is this code written this way'' rarely link back to the exact file, line, or discussion that explains it, forcing manual digging.
+\end{itemize}
+
+\textbf{Why this matters now (contextual relevance):} as codebases and teams grow, onboarding time and cross-team code comprehension become a measurable drag on delivery velocity -- a problem that scales with repository size and team distribution.
+
+\section{Proposed Solution %
+\BvrHint{\ldots Software Proposition}}
+\subsection{Overview}
+Build a \textbf{web-based} codebase intelligence platform with the following components:
+\begin{itemize}[leftmargin=0.7cm]
+    \item \textbf{Codebase indexing:} parses a repository using AST-based analysis to build a structured representation of the code (modules, functions, classes, call/import relationships).
+    \item \textbf{Semantic code search:} natural-language queries locate relevant code across the indexed repository, ranked by relevance.
+    \item \textbf{AI codebase explainer:} answers developer questions about specific functions, modules, or components by retrieving relevant code and linked documentation, with citations to the exact file and line.
+    \item \textbf{Cross-platform context integration:} connects to GitHub (code, comments, pull request and issue history) and Notion (linked project documentation) so relevant context from both sources is available during search and explanation.
+    \item \textbf{Architecture visualization:} automatically generates a dependency and module-relationship graph from static analysis of the codebase.
+    \item \textbf{Pull request summarization:} converts code diffs into concise, plain-language summaries with links to related prior discussion.
+\end{itemize}
+
+\subsection{Core workflow}
+\begin{enumerate}[leftmargin=0.7cm]
+    \item User connects a GitHub repository (and optionally a linked Notion workspace); the system indexes code and documentation.
+    \item User issues a natural-language query or asks a question about a specific function/module.
+    \item System retrieves relevant code chunks and documentation via semantic search, and returns either ranked results or a synthesized answer with citations to file/line.
+    \item For pull requests, the system generates a plain-language diff summary linked to related issue/PR discussion.
+\end{enumerate}
+
+\subsection{Operational constraints for an educational setting}
+\begin{itemize}[leftmargin=0.7cm]
+    \item Scope indexing to 1--2 languages initially (e.g., Python and JavaScript) rather than attempting universal language support.
+    \item Avoid dependence on unproven or exotic research techniques; use established retrieval-augmented generation (RAG) patterns.
+    \item Design for deployability on standard web hosting with a managed vector database.
+\end{itemize}
+
+\section{Solution Approach %
+\BvrHint{\ldots Engineering focus}}
+This is an engineering course project, so we focus on retrieval correctness, integration reliability, and citation grounding rather than novel machine learning research.
+
+\subsection{Semantic retrieval %
+\BvrHint{\ldots non-research}}
+Semantic search will use established, off-the-shelf components rather than custom model training:
+\begin{itemize}[leftmargin=0.7cm]
+    \item AST-based chunking of code into semantically meaningful units (functions, classes) using a parser library (e.g., tree-sitter).
+    \item An off-the-shelf embedding model to vectorize code chunks and documentation.
+    \item Vector similarity search (cosine similarity) with a standard vector database, without claiming state-of-the-art retrieval performance.
+    \item Every AI-generated answer must cite the specific file/line it was grounded in; answers without sufficient retrieval support are flagged as low-confidence rather than fabricated.
+\end{itemize}
+
+\subsection{Web architecture %
+\BvrHint{\ldots web-based solution}}
+A typical 3-tier web architecture:
+\begin{itemize}[leftmargin=0.7cm]
+    \item \textbf{Frontend:} search interface, explainer chat, architecture graph viewer.
+    \item \textbf{Backend API:} indexing pipeline, retrieval orchestration, GitHub/Notion connector logic, LLM query handling.
+    \item \textbf{Storage:} vector database for embeddings, relational/document database for metadata (indexed repos, PR/issue cache, user sessions).
+\end{itemize}
+
+\subsection{CI/CD and fast delivery enabler}
+CI/CD will be used to:
+\begin{itemize}[leftmargin=0.7cm]
+    \item Automatically build and test the indexing pipeline and API on every change.
+    \item Produce repeatable deployment artifacts to staging.
+    \item Enable safe and frequent releases of incremental features (search, then explainer, then integrations).
+\end{itemize}
+
+\section{Evaluation Criterion %
+\BvrHint{\ldots measurable and attributable}}
+We define success using measurable metrics tied to the core retrieval-and-explanation workflow.
+
+\subsection{Primary evaluation metric}
+\textbf{Search relevance (precision@k):} for a hand-labeled set of natural-language queries against a fixed test repository, the proportion of top-$k$ returned results judged relevant.
+\begin{itemize}[leftmargin=0.7cm]
+    \item Target: precision@5 $\ge$ 0.7 on the test query set during prototype evaluation.
+    \item Attribution: measured by manual relevance labeling against retrieved results, logged per query.
+\end{itemize}
+
+\subsection{Secondary evaluation metrics}
+\begin{itemize}[leftmargin=0.7cm]
+    \item \textbf{Citation accuracy:} percentage of explainer answers whose cited file/line actually supports the claim made (manually verified against a sample set).
+    \item \textbf{Index coverage:} percentage of files in a target repository successfully parsed and indexed without error.
+    \item \textbf{Latency:} median response time for a search query and for an explainer answer.
+    \item \textbf{User clarity:} qualitative feedback from test users (1--5 rating) on whether an explainer answer was understandable and useful.
+\end{itemize}
+
+\subsection{Pilot validation plan %
+\BvrHint{\ldots high-level}}
+\begin{itemize}[leftmargin=0.7cm]
+    \item Select 2--3 real open-source repositories of varying size as test subjects.
+    \item Recruit a small group of peer developers unfamiliar with those repositories to run sample queries and rate result relevance and explainer usefulness.
+    \item Compare time-to-locate-relevant-code with and without the tool for a fixed set of onboarding-style questions.
+\end{itemize}
+
+\section{Scalability %
+\BvrHint{\ldots with foresight}}
+The proposition should scale in both theoretical and practical senses.
+
+\begin{enumerate}[leftmargin=0.7cm]
+    \item \textbf{Scalable (theoretically):} The system should support growth in repository size and query volume by:
+    \begin{itemize}[leftmargin=0.7cm]
+        \item decoupling indexing (offline/batch) from query serving (online),
+        \item using incremental re-indexing on repository changes rather than full re-index,
+        \item paginating and limiting retrieval results for common queries.
+    \end{itemize}
+    
+    \item \textbf{Operationally deployable (practically):} The system should run on common web hosting:
+    \begin{itemize}[leftmargin=0.7cm]
+        \item managed vector database,
+        \item containerized or platform-hosted deployment,
+        \item CI/CD pipeline for staging/production.
+    \end{itemize}
+\end{enumerate}
+
+\section{Engine availability heuristic}
+A mature set of ``engines'' (tooling/services) is available to implement this as a web-based project:
+\begin{itemize}[leftmargin=0.7cm]
+    \item AST parsing library (e.g., tree-sitter) for multi-language static analysis.
+    \item Off-the-shelf embedding models and vector databases (e.g., FAISS, Chroma) for semantic retrieval.
+    \item GitHub REST/GraphQL API and Notion API for context connectors.
+    \item LLM API for answer synthesis and PR diff summarization.
+    \item Standard web framework, test framework, and CI runner.
+\end{itemize}
+We will use these mature components to focus on retrieval quality, integration correctness, and citation grounding rather than inventing new infrastructure.
+
+\section{Project scope and deliverables %
+\BvrHint{\ldots iteration-friendly}}
+\subsection{Initial deliverable %
+\BvrHint{\ldots first iteration}}
+\begin{itemize}[leftmargin=0.7cm]
+    \item Repository indexer for 1--2 languages using AST-based parsing.
+    \item Semantic search over indexed code, returning ranked results.
+    \item Basic explainer: answers a question about a function/module with a file/line citation.
+    \item CI: build + backend unit tests + linting.
+    \item CD to staging with a single command or pipeline job.
+\end{itemize}
+
+\subsection{Subsequent deliverables}
+\begin{itemize}[leftmargin=0.7cm]
+    \item GitHub connector: PR/issue history indexed and searchable alongside code.
+    \item Notion connector: linked documentation indexed as additional context.
+    \item Architecture visualization: auto-generated dependency graph.
+    \item Pull request summarization: diff-to-plain-language summaries with linked discussion.
+    \item \emph{(Post-MVP, time permitting)} Git contribution analytics, automatic docstring generation, automatic test scaffolding.
+\end{itemize}
+
+\subsection{Explicitly out of scope}
+Performance profiling and bug prediction based on
+historical commit data are not part of this project, as
+they require runtime instrumentation and trained
+predictive models respectively, both of which are
+outside the current scope and timeline.
+
+\section{Risks and mitigations}
+\begin{itemize}[leftmargin=0.7cm]
+    \item \textbf{LLM hallucination in explanations:} mitigated by strict retrieval-grounding and requiring a citation for every claim; answers without adequate retrieval support are flagged rather than fabricated.
+    \item \textbf{AST parsing complexity across languages:} mitigated by scoping to 1--2 languages initially before generalizing.
+    \item \textbf{GitHub/Notion API rate limits:} mitigated by caching indexed context and incremental re-indexing instead of full re-fetch on every query.
+    \item \textbf{Retrieval quality on code vs.\ prose:} code-specific embedding behavior is not yet evaluated for this project; this is treated as an explicit research task during the prototype phase, not a solved problem.
+    \item \textbf{Evaluation measurement ambiguity:} define the labeled query set and relevance criteria before development begins, to avoid post-hoc metric shopping.
+\end{itemize}
+
+\section{Summary}
+This project proposes a deployable AI-powered codebase
+intelligence platform that reduces the time and effort
+required to understand unfamiliar code. It meets the
+course criteria by prioritizing fast, iteration-friendly
+delivery of a working search-and-explain loop, using
+CI/CD to support frequent safe releases, and defining
+measurable, attributable evaluation criteria --
+particularly search relevance and citation accuracy --
+while remaining focused on sound retrieval-engineering
+practice rather than unproven research novelty.
+
+\end{document}
