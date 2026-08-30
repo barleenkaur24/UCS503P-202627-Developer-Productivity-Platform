@@ -1,45 +1,53 @@
-# UCS503P Project Template
+# Developer Productivity Platform
 
-This is a project template for UCS503P Project (2026-27
-ODD). 
+A unified codebase intelligence platform designed to help developers
+understand, navigate, and maintain unfamiliar software projects.
 
-There are 3 reports in LaTeX format, namely *a*)
-Project Proposal, *b*) Project Report Prototype Stage,
-and *c*) Project Report Final -- each in their
-respective folders.
+## Project Overview
 
-Journals are stacked under the folder `journals`, one
-folder for each team member.  A sample entry has been
-made for example.
+Developers working with unfamiliar or large codebases often spend
+considerable time searching for relevant code, understanding dependencies,
+and finding the context behind implementation decisions.
 
-The source code is contained within the folder `code`.
+The Developer Productivity Platform aims to bring these capabilities into
+a single web-based platform by combining codebase indexing, semantic code
+search, AI-assisted code understanding, architecture visualization, and
+repository intelligence.
 
-The documentation is under folder `docs`.
+## Key Features
 
-All other aspects of code organisation are left to the
-discretion of the user(s).
+- Codebase indexing using AST-based analysis
+- Semantic search across source code
+- AI-assisted codebase explanations
+- Architecture and dependency visualization
+- GitHub repository integration
+- Pull request summarization
+- Context-aware documentation and testing assistance
+
+## Project Status
+
+**Under Development**
+
+This project is being developed as a semester project for **UCS503P –
+Software Engineering (2026–27 ODD)** at Thapar Institute of Engineering
+and Technology.
+
+## Team
+
+| Name | Roll Number |
+|------|-------------|
+| Ayush Vaibhav | 1024030333 |
+| Barleen Kaur | 1024030321 |
+| Kunjal Syal | 1024030337 |
 
 
-## Docs
+## Repository Structure
 
-As of now, the `docs` is just an organised collection
-of markdown (`md`) files.  But the build procedure is
-using [`mkdocs`](https://google.com/search?q=mkdocs)
-backend.  As a result, any commit into the `master`
-branch of github repository would result in CI/CD based
-build and deployment of the documentation including the
-journals.
-
-For a local DEV-version of the docs for viewing and
-testing, install the local env and issue the following
-command:
-
-``` shell
-make docs
-```
-
-### Local `env` for `docs`
-
-``` shell
-
-```
+```text
+├── code/                         # Source code
+├── docs/                         # Project documentation
+├── journals/                     # Individual team journals
+├── project-proposal/             # Project proposal
+├── project-report-prototype-stage/ # Prototype stage report
+├── project-report-final/         # Final project report
+└── README.md                     # Project overview
